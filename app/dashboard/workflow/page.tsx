@@ -13,17 +13,26 @@ import {
 } from "@xyflow/react";
 
 import "@xyflow/react/dist/style.css";
+import Chat from "@/components/nodes/chat";
+
+import AIAgent from "@/components/nodes/ai-agent";
+const nodeTypes = {
+  chat: Chat,
+  "ai-agent": AIAgent,
+};
 const initialNodes: Node[] = [
-  { id: "1", position: { x: 0, y: 0 }, data: { label: "1" } },
-  { id: "2", position: { x: 0, y: 100 }, data: { label: "2" } },
-  { id: "3", position: { x: 0, y: 400 }, data: { label: "3" } },
+  { id: "1", position: { x: 100, y: 100 }, data: { label: "1" }, type: "chat" },
+  {
+    id: "2",
+    position: { x: 100, y: 300 },
+    data: { label: "2" },
+    type: "ai-agent",
+  },
 ];
-const initialEdges: Edge[] = [
-  { id: "e1-2", source: "1", target: "2", animated: true },
-];
+
 const WorkflowPage = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const onConnect = useCallback((connection: Connection) => {
     const edge: Edge = {
       ...connection,
@@ -42,6 +51,7 @@ const WorkflowPage = () => {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        nodeTypes={nodeTypes}
       >
         <Background />
         <Controls />
