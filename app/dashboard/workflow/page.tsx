@@ -6,38 +6,23 @@ import {
   Connection,
   Controls,
   Edge,
-  Node,
   ReactFlow,
   useEdgesState,
   useNodesState,
 } from "@xyflow/react";
 
 import "@xyflow/react/dist/style.css";
-import Chat from "@/components/nodes/chat";
-
-import AIAgent from "@/components/nodes/ai-agent";
-const nodeTypes = {
-  chat: Chat,
-  "ai-agent": AIAgent,
-};
-const initialNodes: Node[] = [
-  { id: "1", position: { x: 100, y: 100 }, data: { label: "1" }, type: "chat" },
-  {
-    id: "2",
-    position: { x: 100, y: 300 },
-    data: { label: "2" },
-    type: "ai-agent",
-  },
-];
+import { initialNodes, nodeTypes } from "@/lib/react-flow";
 
 const WorkflowPage = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const onConnect = useCallback((connection: Connection) => {
+    console.log(connection);
     const edge: Edge = {
       ...connection,
       animated: true,
-      id: `e${edges.length + 1}`,
+      id: `edge-${connection.source}-${connection.target}`,
       sourceHandle: connection.sourceHandle ?? null,
       targetHandle: connection.targetHandle ?? null,
     };

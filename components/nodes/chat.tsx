@@ -5,9 +5,10 @@ import { Handle, Position } from "@xyflow/react";
 const Chat = () => {
   return (
     <div className="w-[150px] flex items-center flex-col">
-      <div className="bg-white h-[100px] border rounded-l-4xl w-[100px] flex justify-center items-center">
+      <div className="shadow bg-white h-[100px] border rounded-l-4xl w-[100px] flex justify-center items-center">
         <IoChatbubbles size={40} />
         <Handle
+          id="chat"
           type="source"
           position={Position.Right}
           style={{ right: "25px", top: "55px", height: 10, width: 10 }}
