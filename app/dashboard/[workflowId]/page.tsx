@@ -68,6 +68,19 @@ const WorkflowPage = () => {
   const handleNodeDialog = (value: boolean) => {
     setNodeDialog(value);
   };
+  const handleSave = async () => {
+    setIsSaveLoading(true);
+    try {
+      const workflow = await axios.patch("/api/dashboard", { workflowId, nodes, edges, workflowName });
+      if (workflow.data.name) {
+        toast.success("Workflow saved.");
+        mutate();
+      }
+    } catch {
+      toast.error("Failed to save workflow.");
+    }
+    setIsSaveLoading(false);
+  };
 
   if (!data || isLoading) {
     return <p className="text-center text-gray-500 mt-10 text-lg">Loading workflow...</p>;
@@ -80,24 +93,23 @@ const WorkflowPage = () => {
     <div className="w-full h-screen">
       <div className="h-[10%] bg-white border-b flex justify-between items-center px-5">
         <div>
-          <input value={workflowName} onChange={(e) => setWorkflowName(e.target.value)} />
+          <input
+            className="w-[400px]"
+            value={workflowName}
+            onChange={(e) => setWorkflowName(e.target.value)}
+            onBlur={handleSave}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault(); // Optional: prevent form submission if inside a form
+                handleSave();
+              }
+            }}
+          />
         </div>
         <div className="flex gap-2">
           <Button
             disabled={isSaveLoading || !hasChanges} // Disable save button if no changes
-            onClick={async () => {
-              setIsSaveLoading(true);
-              try {
-                const workflow = await axios.patch("/api/dashboard", { workflowId, nodes, edges });
-                if (workflow.data.name) {
-                  toast.success("Workflow saved.");
-                  mutate();
-                }
-              } catch {
-                toast.error("Failed to save workflow.");
-              }
-              setIsSaveLoading(false);
-            }}
+            onClick={handleSave}
           >
             {isSaveLoading ? "Saving..." : "Save"}
           </Button>

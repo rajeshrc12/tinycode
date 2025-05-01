@@ -26,12 +26,13 @@ export async function PATCH(req: Request) {
   const {
     user: { id },
   } = (await auth()) as Session;
-  const { workflowId, edges, nodes } = await req.json();
+  const { workflowId, edges, nodes, workflowName } = await req.json();
   try {
     const workflow = await prisma.workflow.update({
       data: {
         edges,
         nodes,
+        name: workflowName,
       },
       where: {
         userId: id,
