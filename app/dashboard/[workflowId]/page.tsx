@@ -38,6 +38,7 @@ const WorkflowPage = () => {
       targetHandle: connection.targetHandle ?? null,
     };
     setEdges((prevEdges) => addEdge(edge, prevEdges));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -46,6 +47,7 @@ const WorkflowPage = () => {
       setEdges(data.edges); // Set initial edges from data
       setNodes(data.nodes); // Set initial nodes from data
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   useEffect(() => {
