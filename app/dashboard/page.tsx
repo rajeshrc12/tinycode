@@ -17,7 +17,6 @@ const DashboardPage = () => {
   if (error) {
     return <p className="text-center text-gray-500 mt-10 text-lg">Error while loading workflow...</p>;
   }
-  console.log(data);
   return (
     <div className="flex flex-col gap-5 py-5 px-15">
       <div className="flex justify-end">
