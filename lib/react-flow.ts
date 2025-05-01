@@ -1,12 +1,12 @@
 import AIAgent from "@/components/nodes/ai-agent";
-import Chat from "@/components/nodes/chat";
+import Telegram from "@/components/nodes/telegram";
 import Gemini from "@/components/nodes/gemini";
 import Gmail from "@/components/nodes/gmail";
 import SwitchRule from "@/components/nodes/switch-rule";
 import { Node } from "@xyflow/react";
 
 export const nodeTypes = {
-  chat: Chat,
+  telegram: Telegram,
   "ai-agent": AIAgent,
   gemini: Gemini,
   gmail: Gmail,
@@ -14,10 +14,10 @@ export const nodeTypes = {
 };
 export const initialNodes: Node[] = [
   {
-    id: "chat",
+    id: "telegram",
     position: { x: 100, y: 100 },
-    data: { label: "1" },
-    type: "chat",
+    data: { label: "telegram" },
+    type: "telegram",
   },
   {
     id: "gmail",

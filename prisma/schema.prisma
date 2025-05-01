@@ -8,14 +8,17 @@ datasource db {
 }
 
 model User {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
-  email String @unique
-  name  String?
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  email     String     @unique
+  name      String?
   workflows Workflow[]
 }
-model Workflow{
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  name String @default("New Workflow")
+
+model Workflow {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  name   String @default("New Workflow")
   userId String @db.ObjectId
-  user User @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+  nodes  Json?
+  edges  Json?
 }

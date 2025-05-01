@@ -1,4 +1,29 @@
+import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { Session } from "next-auth";
+
+export async function POST(req: Request) {
+  const {
+    user: { id },
+  } = (await auth()) as Session;
+  const { workflowId, edges, nodes } = await req.json();
+  try {
+    const workflow = await prisma.workflow.update({
+      data: {
+        edges,
+        nodes,
+      },
+      where: {
+        userId: id,
+        id: workflowId,
+      },
+    });
+    return Response.json({ ...workflow }, { status: 201 });
+  } catch (error) {
+    console.error("Error creating video:", error);
+    return Response.json({ error: "Error creating video" }, { status: 500 });
+  }
+}
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
