@@ -11,7 +11,7 @@ const DashboardPage = () => {
   const { data, error, isLoading } = useSWR(`/api/dashboard/`, fetcher, {
     refreshInterval: 0, // No polling
   });
-  if (!data?.workflows?.length || isLoading) {
+  if (!data?.workflows || isLoading) {
     return <p className="text-center text-gray-500 mt-10 text-lg">Loading workflows...</p>;
   }
   if (error) {

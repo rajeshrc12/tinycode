@@ -15,16 +15,19 @@ import { toast } from "sonner";
 
 const WorkflowPage = () => {
   const { workflowId } = useParams();
-  const { data, error, isLoading } = useSWR(workflowId ? `/api/dashboard/${workflowId}` : null, fetcher, {
+  const { data, error, isLoading, mutate } = useSWR(workflowId ? `/api/dashboard/${workflowId}` : null, fetcher, {
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
     refreshInterval: 0, // No polling
   });
+
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const [isSaveLoading, setIsSaveLoading] = useState(false);
   const [workflowName, setWorkflowName] = useState("");
   const [nodeDialog, setNodeDialog] = useState(false);
+
+  const [hasChanges, setHasChanges] = useState(false); // Track changes
 
   const onConnect = useCallback((connection: Connection) => {
     const edge: Edge = {
@@ -36,32 +39,41 @@ const WorkflowPage = () => {
     };
     setEdges((prevEdges) => addEdge(edge, prevEdges));
   }, []);
+
   useEffect(() => {
     if (data?.name) {
       setWorkflowName(data.name);
-      setEdges(data.edges);
-      setNodes(data.nodes);
+      setEdges(data.edges); // Set initial edges from data
+      setNodes(data.nodes); // Set initial nodes from data
     }
   }, [data]);
 
   useEffect(() => {
-    setEdges([]);
-    setNodes([]);
-  }, []);
+    // Detect if there are any changes compared to the initial state
+    const nodesChanged = JSON.stringify(nodes) !== JSON.stringify(data?.nodes);
+    const edgesChanged = JSON.stringify(edges) !== JSON.stringify(data?.edges);
 
-  console.log(data);
+    if (nodesChanged || edgesChanged) {
+      setHasChanges(true);
+    } else {
+      setHasChanges(false);
+    }
+  }, [nodes, edges, data]);
+
   const handleNodes = (node: Node) => {
     if (!nodes.find((n) => n.type === node.type)) setNodes((prevNodes) => [...prevNodes, node]);
   };
   const handleNodeDialog = (value: boolean) => {
     setNodeDialog(value);
   };
+
   if (!data || isLoading) {
     return <p className="text-center text-gray-500 mt-10 text-lg">Loading workflow...</p>;
   }
   if (error) {
     return <p className="text-center text-gray-500 mt-10 text-lg">Error while loading workflow...</p>;
   }
+
   return (
     <div className="w-full h-screen">
       <div className="h-[10%] bg-white border-b flex justify-between items-center px-5">
@@ -69,16 +81,20 @@ const WorkflowPage = () => {
           <input value={workflowName} onChange={(e) => setWorkflowName(e.target.value)} />
         </div>
         <div className="flex gap-2">
-          {" "}
           <Button
-            disabled={isSaveLoading}
+            disabled={isSaveLoading || !hasChanges} // Disable save button if no changes
             onClick={async () => {
-              setIsSaveLoading((prev) => !prev);
-              const workflow = await axios.patch("/api/dashboard", { workflowId, nodes, edges });
-              if (workflow.data.name) {
-                toast.success("Workflow saved.");
+              setIsSaveLoading(true);
+              try {
+                const workflow = await axios.patch("/api/dashboard", { workflowId, nodes, edges });
+                if (workflow.data.name) {
+                  toast.success("Workflow saved.");
+                  mutate();
+                }
+              } catch {
+                toast.error("Failed to save workflow.");
               }
-              setIsSaveLoading((prev) => !prev);
+              setIsSaveLoading(false);
             }}
           >
             {isSaveLoading ? "Saving..." : "Save"}
@@ -104,7 +120,6 @@ const WorkflowPage = () => {
         </div>
       </div>
       <div className="h-[90%]">
-        {" "}
         <ReactFlow nodes={nodes} edges={edges} onNodesChange={onNodesChange} onEdgesChange={onEdgesChange} onConnect={onConnect} nodeTypes={nodeTypes}>
           <Background />
           <Controls />
@@ -113,4 +128,5 @@ const WorkflowPage = () => {
     </div>
   );
 };
+
 export default WorkflowPage;
