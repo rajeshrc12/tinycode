@@ -44,6 +44,11 @@ const WorkflowPage = () => {
     }
   }, [data]);
 
+  useEffect(() => {
+    setEdges([]);
+    setNodes([]);
+  }, []);
+
   console.log(data);
   const handleNodes = (node: Node) => {
     if (!nodes.find((n) => n.type === node.type)) setNodes((prevNodes) => [...prevNodes, node]);

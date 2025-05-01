@@ -11,7 +11,7 @@ const Workflow = (workflow: WorkflowType) => {
         <span className="text-xs text-muted-foreground">created at today</span>
       </div>
       <Link href={`/dashboard/${workflow.id}`}>
-        <Button variant={"ghost"}>view</Button>
+        <Button variant={"ghost"}>edit</Button>
       </Link>
     </div>
   );
