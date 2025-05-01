@@ -17,7 +17,7 @@ const Sidebar = () => {
     },
   ];
   return (
-    <div className="w-[200px] flex flex-col justify-between mx-2">
+    <div className="w-[250px] border-r flex flex-col justify-between px-2">
       <div className="flex flex-col gap-10">
         <h1 className="font-bold text-2xl w-full text-center">Tinycode</h1>
         <div className="flex flex-col gap-5">
