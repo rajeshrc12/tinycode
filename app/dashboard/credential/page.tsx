@@ -16,7 +16,7 @@ const CredentialPage = () => {
   const [credential, setCredential] = useState("");
   const [credentialFormModal, setCredentialFormModel] = useState(false);
   // const [credentialForm, setCredentialForm] = useState(false);
-  const { data, error, isLoading } = useSWR(`/api/dashboard/credential/`, fetcher, {
+  const { data, error, isLoading, mutate } = useSWR(`/api/dashboard/credential/`, fetcher, {
     refreshInterval: 0, // No polling
   });
   if (!data || isLoading) {
@@ -25,6 +25,7 @@ const CredentialPage = () => {
   if (error) {
     return <p className="text-center text-gray-500 mt-10 text-lg">Error while loading workflow...</p>;
   }
+
   return (
     <div className="flex flex-col gap-5 py-5 px-15">
       <div className="flex justify-end">
@@ -44,7 +45,7 @@ const CredentialPage = () => {
             <DialogHeader>
               <DialogTitle>Add {credential} credential</DialogTitle>
             </DialogHeader>
-            <CredentialForm credential={credential} />
+            <CredentialForm credential={credential} setCredentialFormModel={setCredentialFormModel} mutate={mutate} />
           </DialogContent>
         </Dialog>
       </div>
@@ -53,7 +54,7 @@ const CredentialPage = () => {
       </div>
       <div className="flex flex-col gap-2">
         {data?.credentials.map((credential: CredentialType) => (
-          <CredentialItem key={credential.name} {...credential} />
+          <CredentialItem key={credential.id} {...credential} />
         ))}
       </div>
     </div>

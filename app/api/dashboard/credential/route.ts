@@ -8,7 +8,7 @@ export async function POST(req: Request) {
   } = (await auth()) as Session;
   const { name, type, apiKey } = await req.json();
   try {
-    const workflow = await prisma.credential.create({
+    const credential = await prisma.credential.create({
       data: {
         name,
         userId: id,
@@ -16,7 +16,7 @@ export async function POST(req: Request) {
         type,
       },
     });
-    return Response.json({ ...workflow }, { status: 201 });
+    return Response.json({ ...credential }, { status: 201 });
   } catch (error) {
     console.error("Error creating video:", error);
     return Response.json({ error: "Error creating video" }, { status: 500 });
