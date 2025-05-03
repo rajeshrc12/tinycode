@@ -1,6 +1,6 @@
 import React from "react";
 import { Handle, Position } from "@xyflow/react";
-import withDeleteOnHover from "@/components/hoc/with-delete-onhover";
+import ActionButtonsWrapper from "@/components/hoc/action-button-wrapper";
 
 const Gmail = () => {
   return (
@@ -22,4 +22,4 @@ const Gmail = () => {
   );
 };
 
-export default withDeleteOnHover(Gmail);
+export default ActionButtonsWrapper(Gmail);

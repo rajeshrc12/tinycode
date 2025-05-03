@@ -12,6 +12,7 @@ import axios from "axios";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import AddNode from "@/components/add-node";
 import { toast } from "sonner";
+import EditNodeForm from "@/components/edit-node-form";
 
 const WorkflowPage = () => {
   const { workflowId } = useParams();
@@ -33,7 +34,7 @@ const WorkflowPage = () => {
     const edge: Edge = {
       ...connection,
       animated: true,
-      id: `edge-${connection.source}-${connection.target}`,
+      id: `edge-${connection.sourceHandle}-${connection.targetHandle}`,
       sourceHandle: connection.sourceHandle ?? null,
       targetHandle: connection.targetHandle ?? null,
     };
@@ -88,7 +89,6 @@ const WorkflowPage = () => {
   if (error) {
     return <p className="text-center text-gray-500 mt-10 text-lg">Error while loading workflow...</p>;
   }
-
   return (
     <div className="w-full h-screen">
       <div className="h-[10%] bg-white border-b flex justify-between items-center px-5">
@@ -139,6 +139,7 @@ const WorkflowPage = () => {
           <Controls />
         </ReactFlow>
       </div>
+      <EditNodeForm mutate={mutate} nodes={nodes} workflowId={workflowId as string} />
     </div>
   );
 };

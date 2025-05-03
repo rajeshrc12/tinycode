@@ -9,7 +9,7 @@ interface CredentialFormProps {
 const CredentialForm = ({ credential, setCredentialFormModel, mutate }: CredentialFormProps) => {
   if (!credential) return <div>Loading...</div>;
   if (credential === "telegram") return <TelegramForm setCredentialFormModel={setCredentialFormModel} mutate={mutate} />;
-  if (credential === "gmail") return <GmailForm />;
+  if (credential === "gmail") return <GmailForm setCredentialFormModel={setCredentialFormModel} mutate={mutate} />;
 };
 
 export default CredentialForm;

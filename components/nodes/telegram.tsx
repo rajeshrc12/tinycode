@@ -1,7 +1,7 @@
 import { FaTelegram } from "react-icons/fa";
 import React from "react";
 import { Handle, Position } from "@xyflow/react";
-import withDeleteOnHover from "@/components/hoc/with-delete-onhover";
+import ActionButtonsWrapper from "@/components/hoc/action-button-wrapper";
 
 const Telegram = () => {
   return (
@@ -17,4 +17,4 @@ const Telegram = () => {
   );
 };
 
-export default withDeleteOnHover(Telegram);
+export default ActionButtonsWrapper(Telegram);

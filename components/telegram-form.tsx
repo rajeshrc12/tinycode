@@ -88,8 +88,9 @@ const TelegramForm = ({ setCredentialFormModel, mutate }: CredentialFormProps) =
             </FormItem>
           )}
         />
-
-        <Button type="submit">Add</Button>
+        <Button className="float-right" type="submit">
+          Add
+        </Button>
       </form>
     </Form>
   );

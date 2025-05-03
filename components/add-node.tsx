@@ -3,7 +3,12 @@ import { Node } from "@xyflow/react";
 import React from "react";
 import { Button } from "./ui/button";
 
-const AddNode = ({ handleNodes, handleNodeDialog }: { handleNodes: (node: Node) => void; handleNodeDialog: (value: boolean) => void }) => {
+interface AddNodeProps {
+  handleNodes: (node: Node) => void;
+  handleNodeDialog: (value: boolean) => void;
+}
+
+const AddNode = ({ handleNodes, handleNodeDialog }: AddNodeProps) => {
   return (
     <div>
       {initialNodes.map((node: Node) => (

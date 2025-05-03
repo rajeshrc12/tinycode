@@ -12,7 +12,7 @@ const Sidebar = () => {
     },
     {
       name: "Credentials",
-      path: "/dashboard/credentials",
+      path: "/dashboard/credential",
       icon: <User className="h-4 w-4" />,
     },
   ];
@@ -22,12 +22,7 @@ const Sidebar = () => {
         <h1 className="font-bold text-2xl w-full text-center">Tinycode</h1>
         <div className="flex flex-col gap-5">
           {navItems.map((item) => (
-            <ActiveLink
-              key={item.path}
-              href={item.path}
-              icon={item.icon}
-              name={item.name}
-            />
+            <ActiveLink key={item.path} href={item.path} icon={item.icon} name={item.name} />
           ))}
         </div>
       </div>

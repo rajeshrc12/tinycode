@@ -1,7 +1,7 @@
 import React from "react";
 import { Handle, Position } from "@xyflow/react";
 import { BiSolidDirections } from "react-icons/bi";
-import withDeleteOnHover from "@/components/hoc/with-delete-onhover";
+import ActionButtonsWrapper from "@/components/hoc/action-button-wrapper";
 const SwitchRule = () => {
   return (
     <div className="w-[150px] flex items-center flex-col">
@@ -17,4 +17,4 @@ const SwitchRule = () => {
   );
 };
 
-export default withDeleteOnHover(SwitchRule);
+export default ActionButtonsWrapper(SwitchRule);
